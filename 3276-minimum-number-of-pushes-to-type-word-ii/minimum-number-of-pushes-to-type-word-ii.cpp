@@ -1,28 +1,21 @@
 class Solution {
 public:
     int minimumPushes(string word) {
-        unordered_map<char, int>frequencyMap;
-        int pushes = 0;
-        priority_queue<int>pq;
+        int total_pushes = 0;
+        vector<int>freq (26, 0);
         //count and character map;
-        for(auto ch : word)frequencyMap[ch]++;
+        for(auto ch : word)freq[ch-'a']++;
 
         //dec order as per their frequency
-        for(auto it : frequencyMap)pq.push(it.second);
+        sort(freq.begin(), freq.end(), greater<int>());
 
-        int numKey=2;
-        int step=1;
-        while(!pq.empty()){
-            int count = pq.top();
-            pq.pop();
-            pushes+=(step * count);
-            numKey++;
-            if(numKey==10){
-                numKey=2;
-                step++;
-            }
+        //count pushes as per the order in key pad
+        for(int i=0;i<26;i++){
+            cout<<freq[i]<<" ";
+            if(freq[i]==0)break;
+            total_pushes += freq[i]* ( (i/8)+1 );
         }
 
-        return pushes;
+        return total_pushes;
     }
 };
